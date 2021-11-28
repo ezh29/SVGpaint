@@ -1,0 +1,65 @@
+/* 부트스트랩 기본 수정 */
+.btn-group .btn { display: flex; align-items: center; justify-content: center;}
+/* 스크롤바 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #e4e6ef;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
+/* custom */
+body {background-color: #EEF0F8;}
+.drawing-wrap {
+    box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px, rgb(0 0 0 / 3%) 0px 3px 6px, rgb(0 0 0 / 5%) 0px 8px 12px, rgb(0 0 0 / 6%) 0px 12px 18px;
+    min-width: 800px;
+    min-height: 500px;
+
+}
+#drawing {
+    height: 500px;
+    width: 500px;
+    background-color: #fff;
+    overflow: auto; 
+   border-right: 2px dotted #d2d6e9;
+    border-radius: 10px 0 0 10px;
+}
+.control {
+    width: 300px;
+    padding: 2rem;
+    background-color: #fff;
+
+    border-radius: 0 10px 10px 0;
+
+}
+.control input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    width: 5rem;
+    height: 30px;
+    cursor: pointer;
+}
+.control input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.control input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 0.42rem;
+}
+input[type="number"]{
+  font-size: .75em;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  text-align: center;
+}

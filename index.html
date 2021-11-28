@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVGpaint</title>
+    <!-- bootstrap.css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Material Icons.css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- custom.css -->
+    <link rel="stylesheet" href="./css/custom.css">
+</head>
+
+<body>
+    <div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="drawing-wrap row">
+            <div id="drawing"></div>
+            <div class="control d-flex flex-column justify-content-between">
+                <div class="row mb-2">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="undo()">
+                            <span class="material-icons me-1">
+                                undo
+                            </span> 실행취소
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" onclick="redo()">
+                            <span class="material-icons me-1">
+                                redo
+                            </span> 다시실행
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="btn-group" role="group">
+                        <input type="radio" class="btn-check" name="shapeType" id="shapeType1" value="mouse paint"
+                            checked onclick="getShapeType()">
+                        <label class="btn btn-primary" for="shapeType1" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="자유 그리기">
+                            <span class="material-icons">
+                                draw
+                            </span>
+                        </label>
+                        <input type="radio" class="btn-check" name="shapeType" id="shapeType5" value="line"
+                            onclick="getShapeType()">
+                        <label class="btn btn-primary" for="shapeType5" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="직선 그리기">
+                            <span class="material-icons" style="font-size: 20px;">
+                                border_color
+                            </span>
+                        </label>
+                        <input type="radio" class="btn-check" name="shapeType" id="shapeType2" value="rect"
+                            onclick="getShapeType()">
+                        <label class="btn btn-primary" for="shapeType2" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="사각형 그리기">
+                            <span class="material-icons">
+                                crop_square
+                            </span>
+                        </label>
+                        <input type="radio" class="btn-check" name="shapeType" id="shapeType3" value="ellipse"
+                            onclick="getShapeType()">
+                        <label class="btn btn-primary" for="shapeType3" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="원형 그리기">
+                            <span class="material-icons" style="font-size: 20px;">
+                                radio_button_unchecked
+                            </span>
+                        </label>
+                        <input type="radio" class="btn-check" name="shapeType" id="shapeType4" value="polygon"
+                            onclick="getShapeType()">
+                        <label class="btn btn-primary" for="shapeType4" data-bs-html="true" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="다각형 그리기 <br/>(Enter로 Point 추가)">
+                            <span class="material-icons" style="font-size: 20px;">
+                                polyline
+                            </span>
+                        </label>
+
+                    </div>
+                </div>
+                <div>
+                    <label for="stroke" class="col-form-label d-flex align-items-center justify-content-between">
+                        선 굵기
+                        <span id="strokeValue" class="badge bg-secondary">10</span>
+                    </label>
+                    <div class="row">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary" value="5" onclick="getStroke(event)">
+                                5
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="15" onclick="getStroke(event)">
+                                15
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="25" onclick="getStroke(event)">
+                                25
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="35" onclick="getStroke(event)">
+                                35
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="50" onclick="getStroke(event)">
+                                50
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div>
+                            <input id="stroke" class="w-100" type="range" value="10" min="5" max="50"
+                                oninput="getStroke(event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="col-form-label">선 색상</label>
+                    <div>
+                        <input id="color" class="w-100" type="color" value="#000000" oninput="getStrokeColor(event)" />
+                    </div>
+                </div>
+                <div>
+                    <div class="row ">
+                        <label for="zoomRange"
+                            class="col-form-label d-flex align-items-center justify-content-between">대지 확대/축소
+                            <span id="zoomValue" class="badge bg-secondary">100%</span>
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary" value="50" onclick="zoomSvg(event)">
+                                50%
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="100" onclick="zoomSvg(event)">
+                                100%
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="200" onclick="zoomSvg(event)">
+                                200%
+                            </button>
+                            <button type="button" class="btn btn-secondary" value="400" onclick="zoomSvg(event)">
+                                400%
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="range" class="w-100 slider" min="10" max="400" value="100" id="zoomRange"
+                            oninput="zoomSvg(event)">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <label class="btn btn-outline-secondary">
+                            <input id="file" class="form-control" type="file" accept=".svg" style="display: none;"
+                                onchange="readFile(event)">
+                            <span class="material-icons me-1" style="font-size: 20px;">
+                                folder_open
+                            </span>
+                            불러오기
+                        </label>
+                        <button type="button" class="btn btn-outline-secondary" onclick="download()">
+                            <span class="material-icons me-1" style="font-size: 20px;">
+                                save
+                            </span>
+                            다운로드
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- bootstrap.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+    <!-- svg.js -->
+    <script src="./js/svg.min.js"></script>
+    <!-- svg.draw.js -->
+    <script src="./js/svg.draw.js"></script>
+    <!-- custom.js -->
+    <script src="./js/custom.js"></script>
+</body>
+
+</html>
